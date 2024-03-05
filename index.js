@@ -1,19 +1,8 @@
-// const textIn = fs.readFileSync("./txt/input.txt", "utf-8");
-// const textOut = `This is what we know about avocado: ${textIn}.\nCreate on ${Date.now()}`;
-// fs.writeFileSync("./txt/output.txt", textOut);
-
-// fs.readFile("./txt/start.txt", "utf-8", (err, data) => {
-//   if (err) throw err;
-//   console.log(data);
-// });
-
-// console.log("Will read file");
-
-///////////////////////
 // SERVER
 const fs = require("fs");
 const http = require("http");
 const url = require("url");
+const slugify = require("slugify");
 const replaceTemplate = require("./module/replaceTemplate");
 
 const tempOverview = fs.readFileSync(
@@ -31,6 +20,8 @@ const temptProduct = fs.readFileSync(
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf8");
 const dataObj = JSON.parse(data);
+const slugs = dataObj.map((el) => slugify(el.productName, { lower: true }));
+console.log(slugs);
 
 const server = http.createServer((req, res) => {
   const { query, pathname } = url.parse(req.url, true);
